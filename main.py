@@ -13,7 +13,10 @@ game_title = """
 """
 print(game_title)
 
-player_name = input("Enter your name: ")
+player_name = input("Enter your name: ").strip()
+
+if not player_name:
+    player_name = "Advanturer"
 
 welcome_msg = f"""
     Welcome, {player_name}!
@@ -38,11 +41,11 @@ while True:
 
     print("""
         Pick a Choice:
-        
+
         1. Look around
         2. Quit game
     """)
-    choice = input("Choose your choice: ")
+    choice = input("Choose your choice: ").strip()
 
     if choice == "1":
         print("You're currently in the beach.")
@@ -51,4 +54,3 @@ while True:
         break
     else:
         print("Invalid choice")
-        continue
