@@ -26,7 +26,7 @@ def available_actions(player):
 def move_player(player, destination):
     current_location = player["location"]
 
-    possible_destinations = available_actions[player]
+    possible_destinations = available_actions(player)
 
     if destination not in possible_destinations:
         return "False", f"You cannot move from {current_location} to {destination}"
