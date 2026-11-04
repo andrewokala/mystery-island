@@ -37,9 +37,13 @@ def move_player(player, destination):
     if destination not in possible_destinations:
         return False, f"You cannot move from {current_location} to {destination}."
 
-    if destination == "Old Bridge" and not can_cross_bridge(player):
+    if (
+        current_location == "Old Bridge"
+        and destination == "Lighthouse"
+        and not can_cross_bridge(player)
+    ):
         return False, "You need a rope to cross the Old Bridge."
-
+        
     player["location"] = destination
 
     return True, f"You moved to {destination}!"
@@ -77,4 +81,9 @@ def can_light_beacon(player):
 
 
 def item_at_location(player):
-    return items_by_location.get(player["location"])
+    item = items_by_location.get(player["location"])
+
+    if item is None or item in player["inventory"]:
+        return None
+    
+    return item
