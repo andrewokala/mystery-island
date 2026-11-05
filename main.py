@@ -63,66 +63,90 @@ def display_menu(player):
 def main():
     display_title()
 
-    player_name = input("Enter your name: ").strip()
+    while True:
 
-    if not player_name:
-        player_name = "Adventurer"
+        player_name = input("Enter your name: ").strip()
 
-    player = new_game(player_name)
+        if not player_name:
+            player_name = "Adventurer"
 
-    print(f"\nWelcome, {player['name']}!")
+        player = new_game(player_name)
 
-    while not player["game_over"]:
-        display_location(player)
-        display_menu(player)
+        quit_requested = False
 
-        choice = input("\nChoose an action: ").strip()
+        print(f"\nWelcome, {player['name']}!")
 
-        if choice == "1":
-            destination = input(
-                "Where would you like to go? "
-            ).strip().title()
+        while not player["game_over"]:
+            display_location(player)
+            display_menu(player)
 
-            success, message = move_player(player, destination)
+            choice = input("\nChoose an action: ").strip()
 
-            print(message)
+            if choice == "1":
+                destination = input(
+                    "Where would you like to go? "
+                ).strip().title()
 
-        elif choice == "2":
-            item = item_at_location(player)
+                success, message = move_player(player, destination)
 
-            print("You look around carefully.")
+                print(message)
 
-            if item:
-                print(f"You discover something: {item}!")
+            elif choice == "2":
+                item = item_at_location(player)
 
-        elif choice == "3":
-            item = input("Which item would you like to collect? ").strip().title()
+                print("You look around carefully.")
 
-            success, message = collect_item(player, item)
+                if item:
+                    print(f"You discover something: {item}!")
 
-            print(message)
+            elif choice == "3":
+                item = input("Which item would you like to collect? ").strip().title()
 
-        elif choice == "4":
-            inventory = display_inventory(player)
+                success, message = collect_item(player, item)
 
-            if not inventory:
-                print("Your inventory is empty.")
+                print(message)
+
+            elif choice == "4":
+                inventory = display_inventory(player)
+
+                if not inventory:
+                    print("Your inventory is empty.")
+                else:
+                    print("\nYour inventory:")
+
+                    for item in inventory:
+                        print(f"- {item}")
+
+            elif choice == "5":
+                success, message = light_beacon(player)
+                print(message)
+
+            elif choice == "6":
+               quit_requested = True
+               player["game_over"] = True
+
             else:
-                print("\nYour inventory:")
+                print("Invalid choice. Please select 1, 2, 3, 4, 5 or 6.")
 
-                for item in inventory:
-                    print(f"- {item}")
+        while True:
 
-        elif choice == "5":
-            success, message = light_beacon(player)
-            print(message)
+            if quit_requested:
+                print("\nThank you for playing Mystery Island!")
+                return
 
-        elif choice == "6":
-            print("Goodbye! Thanks for playing Mystery Island.")
-            break
+            replay = input(
+                "\nWould you like to play again? (yes/no): "
+            ).strip().lower()
 
-        else:
-            print("Invalid choice. Please select 1, 2, 3, 4, 5 or 6.")
+            if replay in ("yes", "y"):
+                print("\nStarting a new adventure...")
+                break
+            elif replay in ("no", "n"):
+                print("\nThank you for playing Mystery Island!")
+                return
+            else:
+                print("Invalid response, enter yes or no.")
+
 
 
 if __name__ == "__main__":
