@@ -72,7 +72,7 @@ def main():
 
     print(f"\nWelcome, {player['name']}!")
 
-    while True:
+    while not player["game_over"]:
         display_location(player)
         display_menu(player)
 
