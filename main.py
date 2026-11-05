@@ -4,8 +4,8 @@ from game import (
     move_player,
     collect_item,
     display_inventory,
-    can_light_beacon,
-    item_at_location
+    item_at_location,
+    light_beacon
 )
 
 
@@ -114,10 +114,8 @@ def main():
                     print(f"- {item}")
 
         elif choice == "5":
-            if can_light_beacon(player):
-                print("You have the lantern. The beacon is ready to be restored!")
-            else:
-                print("You cannot light the beacon. You need the lantern at the Lighthouse.")
+            success, message = light_beacon(player)
+            print(message)
 
         elif choice == "6":
             print("Goodbye! Thanks for playing Mystery Island.")

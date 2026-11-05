@@ -93,3 +93,15 @@ def item_at_location(player):
         return None
     
     return item
+
+def light_beacon(player):
+    if not can_light_beacon(player):        
+        if player["location"] != "Lighthouse":
+            return False, f"Cannot light beacon in {player['location']}."
+        
+        return False, "Lantern is required to light the beacon."
+
+    player["won"] = True
+    player["game_over"] = True
+
+    return True, "You successfully light the beacon. You won!"
