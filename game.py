@@ -45,6 +45,12 @@ def move_player(player, destination):
         return False, "You need a rope to cross the Old Bridge."
         
     player["location"] = destination
+    player["energy"] -= 1
+
+    if player["energy"] <= 0:
+        player["game_over"] = True
+        player["won"] = False
+        return False, "You have run out of energy. Game over!"
 
     return True, f"You moved to {destination}!"
 
