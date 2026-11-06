@@ -1,6 +1,6 @@
 import unittest
 
-from game import new_game, move_player, collect_item
+from game import new_game, move_player, collect_item, light_beacon
 
 class TestNewGame(unittest.TestCase):
 
@@ -88,6 +88,53 @@ class TestInventory(unittest.TestCase):
 
         self.assertFalse(success)
         self.assertEqual(player["inventory"], [])
+
+class TestGameEnding(unittest.TestCase):
+
+    def test_beacon_cannot_be_lit_without_lantern(self):
+        player = new_game("Andrew")
+        player["location"] = "Lighthouse"
+
+        success, message = light_beacon(player)
+
+        self.assertFalse(success)
+        self.assertFalse(player["game_over"])
+        self.assertFalse(player["won"])
+
+    def test_beacon_cannot_be_lit_outside_lighthouse(self):
+        player = new_game("Andrew")
+        player["inventory"].append("Lantern")
+
+
+        success, message = light_beacon(player)
+
+        self.assertFalse(success)
+        self.assertFalse(player["game_over"])
+        self.assertFalse(player["won"])
+
+    def test_successfully_lighting_beacon_wins_game(self):
+        player = new_game("Andrew")
+        player["location"] = "Lighthouse"
+        player["inventory"].append("Lantern")
+
+        success, message = light_beacon(player)
+
+        second_success, message = light_beacon(player)
+
+        self.assertTrue(success)
+        self.assertTrue(player["game_over"])
+        self.assertTrue(player["won"])
+
+    def test_running_out_of_energy_causes_defeat(self):
+        player = new_game("Andrew")
+        player["energy"] = 1
+
+        success, message = move_player(player, "Jungle")
+
+        self.assertFalse(success)
+        self.assertEqual(player["energy"], 0)
+        self.assertTrue(player["game_over"])
+        self.assertFalse(player["won"])
 
 
 
