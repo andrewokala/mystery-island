@@ -136,6 +136,25 @@ class TestGameEnding(unittest.TestCase):
         self.assertTrue(player["game_over"])
         self.assertFalse(player["won"])
 
+class TestGameReset(unittest.TestCase):
+
+    def test_new_game_creates_fresh_player_stats(self):
+        first_player = new_game("Andrew")
+
+        first_player["location"] = "Lighthouse"
+        first_player["energy"] = 0
+        first_player["inventory"].extend(["Lantern","Rope"])
+        first_player["game_over"] = True
+        first_player["won"] = True
+
+        second_player = new_game("Andrew")
+
+        self.assertEqual(second_player["location"], "Beach")
+        self.assertEqual(second_player["energy"], 5)
+        self.assertEqual(second_player["inventory"], [])
+        self.assertEqual(second_player["game_over"], False)
+        self.assertEqual(second_player["won"], False)
+
 
 
 if __name__ == "__main__":
