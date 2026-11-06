@@ -30,6 +30,9 @@ def available_actions(player):
 
 
 def move_player(player, destination):
+    if player["game_over"]:
+        return False, "The game has already ended. Start a new adventure."
+
     current_location = player["location"]
 
     possible_destinations = available_actions(player)
