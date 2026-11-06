@@ -50,6 +50,33 @@ class TestPlayerMovement(unittest.TestCase):
         self.assertEqual(player["location"], "Old Bridge")
         self.assertEqual(player["energy"], 5)
 
+    def test_player_cannot_move_after_winning(self):
+        player = new_game("Andrew")
+        player["location"] = "Lighthouse"
+        player["inventory"].append("Lantern")
+
+        light_beacon(player)
+
+        success, message = move_player(player, "Old Bridge")
+
+        self.assertFalse(success)
+        self.assertEqual(player["location"], "Lighthouse")
+        self.assertEqual(player["energy"], 5)
+        self.assertTrue(player["won"])
+
+    def test_player_cannot_move_after_losing(self):
+        player = new_game("Andrew")
+        player["energy"] = 1
+
+        move_player(player, "Jungle")
+
+        success, message = move_player(player, "Cave")
+
+        self.assertFalse(success)
+        self.assertEqual(player["location"], "Jungle")
+        self.assertEqual(player["energy"], 0)
+        self.assertFalse(player["won"])
+
 class TestInventory(unittest.TestCase):
 
     def test_player_can_collect_lantern(self):
