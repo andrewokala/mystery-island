@@ -1,6 +1,6 @@
 import unittest
 
-from game import new_game, move_player
+from game import new_game, move_player, collect_item
 
 class TestNewGame(unittest.TestCase):
 
@@ -49,7 +49,46 @@ class TestPlayerMovement(unittest.TestCase):
         self.assertFalse(success)
         self.assertEqual(player["location"], "Old Bridge")
         self.assertEqual(player["energy"], 5)
+
+class TestInventory(unittest.TestCase):
+
+    def test_player_can_collect_lantern(self):
+        player = new_game("Andrew")
+        player["location"] = "Jungle"
+
+        success, message = collect_item(player, "Lantern")
+
+        self.assertTrue(success)
+        self.assertIn("Lantern", player["inventory"])
+
+    def test_player_can_collect_rope(self):
+        player = new_game("Andrew")
+        player["location"] = "Cave"
+
+        success, message = collect_item(player, "Rope")
+
+        self.assertTrue(success)
+        self.assertIn("Rope", player["inventory"])
+
+    def test_player_cannot_collect_same_item_twice(self):
+        player = new_game("Andrew")
+        player["location"] = "Jungle"
+
+        first_success, first_message = collect_item(player, "Lantern")
+        second_success, second_message = collect_item(player, "Lantern")
+
+        self.assertTrue(first_success)
+        self.assertFalse(second_success)
+        self.assertEqual(player["inventory"], ["Lantern"])
+
+    def test_player_cannot_collect_item_from_wrong_location(self):
+        player = new_game("Andrew")
         
+        success, message = collect_item(player, "Lantern")
+
+        self.assertFalse(success)
+        self.assertEqual(player["inventory"], [])
+
 
 
 if __name__ == "__main__":
