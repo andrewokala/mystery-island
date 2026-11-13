@@ -116,6 +116,16 @@ class TestInventory(unittest.TestCase):
         self.assertFalse(success)
         self.assertEqual(player["inventory"], [])
 
+    def test_player_cannot_collect_item_after_game_over(self):
+        player = new_game("Andrew")
+        player["location"] = "Jungle"
+        player["game_over"]= True
+
+        success, message = collect_item(player, "Lantern")
+
+        self.assertFalse(success)
+        self.assertEqual(player["inventory"], [])
+
 class TestGameEnding(unittest.TestCase):
 
     def test_beacon_cannot_be_lit_without_lantern(self):
@@ -161,6 +171,17 @@ class TestGameEnding(unittest.TestCase):
         self.assertFalse(success)
         self.assertEqual(player["energy"], 0)
         self.assertTrue(player["game_over"])
+        self.assertFalse(player["won"])
+
+    def test_player_cannot_light_beacon_after_game_over(self):
+        player = new_game("Andrew")
+        player["location"] = "Lighthouse"
+        player["inventory"].append("Lantern")
+        player["game_over"] = True
+
+        success, message = light_beacon(player)
+
+        self.assertFalse(success)
         self.assertFalse(player["won"])
 
 class TestGameReset(unittest.TestCase):

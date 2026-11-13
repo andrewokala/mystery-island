@@ -59,6 +59,9 @@ def move_player(player, destination):
 
 
 def collect_item(player, item):
+    if player["game_over"]:
+        return False, "The game has already ended. Start a new advanture."
+        
     current_location = player["location"]
 
     available_item = items_by_location.get(current_location)
@@ -98,6 +101,9 @@ def item_at_location(player):
     return item
 
 def light_beacon(player):
+    if player["game_over"]:
+        return False, "the game has already ended. Start a new adventure"
+
     if not can_light_beacon(player):        
         if player["location"] != "Lighthouse":
             return False, f"Cannot light beacon in {player['location']}."
