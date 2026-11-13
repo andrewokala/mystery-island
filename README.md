@@ -75,10 +75,8 @@ The player loses when their energy reaches zero or below before successfully com
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/andrewokala/mystery-island.git
 ```
-
-Replace `<repository-url>` with the actual Git repository URL.
 
 ### 2. Enter the Project Directory
 
